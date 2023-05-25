@@ -194,4 +194,11 @@ public final class Constants {
       public static final PIDFFGains K_BACK_RIGHT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
     }
   }
+
+  @UtilityClass
+  public static final class SillyConstants {
+    public static double xSpeedMult = 1;
+    public static double ySpeedMult = 1;
+    public static double rSpeedMult = 1;
+  }
 }

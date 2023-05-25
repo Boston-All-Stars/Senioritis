@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.SillyConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 
@@ -56,12 +57,14 @@ public class MotionHandler {
    */
   public static SwerveModuleState[] driveFullControl() {
     double xSpeed =
-        MathUtil.applyDeadband(-Robot.driver.getLeftY(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
+        MathUtil.applyDeadband(-Robot.driver.getLeftY(), DriveConstants.K_JOYSTICK_TURN_DEADZONE)
+            * SillyConstants.xSpeedMult;
     double ySpeed =
-        MathUtil.applyDeadband(-Robot.driver.getLeftX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
+        MathUtil.applyDeadband(-Robot.driver.getLeftX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE)
+            * SillyConstants.ySpeedMult;
     double rSpeed =
-        MathUtil.applyDeadband(-Robot.driver.getRightX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
-
+        MathUtil.applyDeadband(-Robot.driver.getRightX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE)
+            * SillyConstants.rSpeedMult;
     SwerveModuleState[] swerveModuleStates =
         DriveConstants.KINEMATICS.toSwerveModuleStates(
             ChassisSpeeds.fromFieldRelativeSpeeds(
