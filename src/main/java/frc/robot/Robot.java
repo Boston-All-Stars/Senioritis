@@ -105,6 +105,10 @@ public class Robot extends LoggedRobot {
       autoChooser.addOption(
           "HighCubeTrajectory",
           new SequentialCommandGroup(
+              new InstantCommand(
+                  () ->
+                      swerveDrive.resetOdometry(
+                          Autos.SAMPLE_RED.getTrajectory().getInitialHolonomicPose())),
               IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
               new WaitCommand(0.25),
               IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
@@ -121,6 +125,10 @@ public class Robot extends LoggedRobot {
       autoChooser.addOption(
           "HighCubeTrajectory",
           new SequentialCommandGroup(
+              new InstantCommand(
+                  () ->
+                      swerveDrive.resetOdometry(
+                          Autos.SAMPLE_RED.getTrajectory().getInitialHolonomicPose())),
               IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
               new WaitCommand(0.25),
               IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
