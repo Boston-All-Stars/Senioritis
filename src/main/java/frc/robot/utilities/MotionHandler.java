@@ -9,7 +9,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
-import org.littletonrobotics.junction.Logger;
 
 public class MotionHandler {
 

@@ -1,19 +1,58 @@
 package frc.robot.utilities;
 
-import static frc.robot.Constants.DriveConstants.Gains;
-
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants.Gains;
 import frc.robot.Robot;
 import java.util.HashMap;
 import lombok.NonNull;
 import org.littletonrobotics.junction.Logger;
 
 public class TrajectoryController {
+
+  public enum Autos {
+    // Blue Paths
+    SAMPLE_BLUE("simpleblue", 4, 1),
+
+    // Red Paths
+    // to make red paths, take equivalent paths and replace every Y value with 8.01 - Y
+    // Then adjust headings as necessary for a smooth trajectory
+    // It won't look right, but, well, it is what it is
+    SAMPLE_RED("simplered", 4, 1);
+    private PathPlannerTrajectory trajectory;
+
+    private Autos(String filename, double maxVel, double maxAccel) {
+      trajectory = PathPlanner.loadPath(filename, new PathConstraints(maxVel, maxAccel));
+    }
+
+    private Autos(String filename) {
+      this(
+          filename,
+          Constants.DriveConstants.MAX_SWERVE_VEL,
+          Constants.DriveConstants.MAX_SWERVE_ACCEL);
+    }
+
+    private void clear() {
+      this.trajectory = null;
+    }
+
+    public static void clearAll() {
+      for (Autos auto : Autos.values()) {
+        auto.clear();
+      }
+    }
+
+    public PathPlannerTrajectory getTrajectory() {
+      return trajectory;
+    }
+  }
 
   private static TrajectoryController instance;
   Timer timer = new Timer();

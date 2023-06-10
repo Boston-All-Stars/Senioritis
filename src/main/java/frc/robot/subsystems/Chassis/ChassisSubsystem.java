@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Chassis;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -8,13 +9,17 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
 import frc.robot.subsystems.Chassis.Modules.Module;
 import frc.robot.subsystems.Chassis.Modules.ModuleIO;
 import frc.robot.utilities.MotionHandler;
+import frc.robot.utilities.TrajectoryController;
 import org.littletonrobotics.junction.Logger;
 
 public class ChassisSubsystem extends SubsystemBase {
@@ -287,5 +292,11 @@ public class ChassisSubsystem extends SubsystemBase {
             "Swerve/Chassis Speeds/Desired/R radps", targetChassisSpeeds.omegaRadiansPerSecond);
   }
 
-  public static class Commands {}
+  public static class Commands {
+    public static SequentialCommandGroup followTAndWait(PathPlannerTrajectory T) {
+      return new SequentialCommandGroup(
+          new InstantCommand(() -> TrajectoryController.getInstance().changePath(T)),
+          new WaitUntilCommand(() -> TrajectoryController.getInstance().isFinished()));
+    }
+  }
 }

@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -28,6 +30,7 @@ import frc.robot.subsystems.Pivot.PivotSubsystem;
 import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.LEDController;
 import frc.robot.utilities.MotionHandler.MotionMode;
+import frc.robot.utilities.TrajectoryController.Autos;
 import java.io.File;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -91,11 +94,46 @@ public class Robot extends LoggedRobot {
             new SetSuperstructure(Superstructures.HOME_POSITION),
             Commands.parallel(new InstantCommand(() -> motionMode = MotionMode.NULL)),
             new RunCommand(
-                () ->
-                    swerveDrive.setModuleStates(
-                        DriveConstants.KINEMATICS.toSwerveModuleStates(
-                            ChassisSpeeds.fromFieldRelativeSpeeds(
-                                1, 0, 0, swerveDrive.getYaw()))))));
+                    () ->
+                        swerveDrive.setModuleStates(
+                            DriveConstants.KINEMATICS.toSwerveModuleStates(
+                                ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    1, 0, 0, swerveDrive.getYaw()))))
+                .deadlineWith(new WaitCommand(4))));
+
+    if (DriverStation.getAlliance() == Alliance.Red) {
+      autoChooser.addOption(
+          "HighCubeTrajectory",
+          new SequentialCommandGroup(
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
+              new WaitCommand(0.25),
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+              new SetSuperstructure(Superstructures.CUBE_HIGH),
+              new WaitCommand(0.5),
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
+              new WaitCommand(0.25),
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+              new SetSuperstructure(Superstructures.HOME_POSITION),
+              Commands.parallel(new InstantCommand(() -> motionMode = MotionMode.TRAJECTORY)),
+              ChassisSubsystem.Commands.followTAndWait(Autos.SAMPLE_RED.getTrajectory()),
+              new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN)));
+    } else {
+      autoChooser.addOption(
+          "HighCubeTrajectory",
+          new SequentialCommandGroup(
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
+              new WaitCommand(0.25),
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+              new SetSuperstructure(Superstructures.CUBE_HIGH),
+              new WaitCommand(0.5),
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
+              new WaitCommand(0.25),
+              IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+              new SetSuperstructure(Superstructures.HOME_POSITION),
+              Commands.parallel(new InstantCommand(() -> motionMode = MotionMode.TRAJECTORY)),
+              ChassisSubsystem.Commands.followTAndWait(Autos.SAMPLE_RED.getTrajectory()),
+              new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN)));
+    }
   }
 
   private void initializeLogging() {
