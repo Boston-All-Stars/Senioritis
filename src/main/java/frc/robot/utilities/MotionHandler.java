@@ -9,7 +9,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
-import frc.robot.commands.DumbDriveTrajectory;
 import org.littletonrobotics.junction.Logger;
 
 public class MotionHandler {
@@ -18,7 +17,6 @@ public class MotionHandler {
     FULL_DRIVE,
     HEADING_CONTROLLER,
     TRAJECTORY,
-    TRAJECTORY_DUMB,
     LOCKDOWN,
     NULL
   }
@@ -68,34 +66,6 @@ public class MotionHandler {
                 ySpeed * DriveConstants.MAX_SWERVE_VEL,
                 rSpeed * DriveConstants.MAX_ROTATIONAL_SPEED_RAD_PER_SEC,
                 Rotation2d.fromDegrees(Robot.swerveDrive.inputs.gyroYawPosition)));
-
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAX_SWERVE_VEL);
-
-    return swerveModuleStates;
-  }
-
-  public static SwerveModuleState[] driveTrajectoryDumb() {
-    // X and Y are purposefully swapped because in the actual
-    // controls, the Y axis of the stick controls the "xSpeed"
-    // and vice-versa
-    double xSpeed = DumbDriveTrajectory.getYSpeed();
-    double ySpeed = DumbDriveTrajectory.getXSpeed();
-    double rSpeed = DumbDriveTrajectory.getRSpeed();
-
-    xSpeed *= DriveConstants.MAX_SWERVE_VEL;
-    ySpeed *= DriveConstants.MAX_SWERVE_VEL;
-
-    Rotation2d yaw = Robot.swerveDrive.getYaw();
-
-    SwerveModuleState[] swerveModuleStates =
-        DriveConstants.KINEMATICS.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(
-                xSpeed * yaw.getCos() + ySpeed * yaw.getSin(),
-                xSpeed * yaw.getSin() + ySpeed * yaw.getCos(),
-                rSpeed * DriveConstants.MAX_ROTATIONAL_SPEED_RAD_PER_SEC,
-                Rotation2d.fromDegrees(0)));
-
-    Logger.getInstance().recordOutput("foo", yaw.getCos());
 
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAX_SWERVE_VEL);
 
