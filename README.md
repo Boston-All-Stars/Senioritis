@@ -1,7 +1,7 @@
 # Senioritis
 Boston All-Stars codebase!
 
-The Boston Allstars is a group of graduating seniors from Boston-area teams we are gathering to build a robot for the 2023 game to compete at Summer Heat in Maine this summer. We currently have members from 6 teams:
+The Boston Allstars is a group of graduating seniors from Boston-area teams we are gathering to build a robot for the 2023 game to compete at Summer Heat in Maine this summer. We currently have members from 8 teams:
 FRC 246 ‘Lobstah Bots’,
 FRC 1761 'STEAMpunk Tigers',
 FRC 2423 ‘The KwarQs’,
