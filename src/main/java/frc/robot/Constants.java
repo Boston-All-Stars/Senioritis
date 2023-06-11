@@ -109,9 +109,9 @@ public final class Constants {
 
   @UtilityClass
   public static class IntakeConstants {
-    public static final double IDLE_VOLTAGE = 0;
-    public static final double INTAKE_VOLTAGE = 5;
-    public static final double OUTTAKE_VOLTAGE = -5;
+    public static final double IDLE_VOLTAGE = 2;
+    public static final double INTAKE_VOLTAGE = 6;
+    public static final double OUTTAKE_VOLTAGE = -6;
   }
 
   @UtilityClass
@@ -123,7 +123,7 @@ public final class Constants {
     public static final double DRIVE_DIST_PER_PULSE =
         (1.0 / DRIVE_GEAR_RATIO) * Units.inchesToMeters(WHEEL_DIAMETER) * Math.PI;
     public static final double AZI_DIST_PER_PULSE = (1.0 / AZI_GEAR_RATIO) * 360;
-    public static final double MAX_SWERVE_VEL = Units.feetToMeters(100);
+    public static final double MAX_SWERVE_VEL = Units.feetToMeters(16);
     public static final double MAX_SWERVE_AZI = Math.PI;
     public static final double MAX_SWERVE_ACCEL = Units.feetToMeters(5);
     public static final double MAX_ROTATIONAL_SPEED_RAD_PER_SEC = 1;

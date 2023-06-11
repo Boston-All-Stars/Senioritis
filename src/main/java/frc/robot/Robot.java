@@ -72,24 +72,24 @@ public class Robot extends LoggedRobot {
         "HighCube",
         new SequentialCommandGroup(
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
-            new WaitCommand(0.25),
+            new WaitCommand(.5),
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
             new SetSuperstructure(Superstructures.CUBE_HIGH),
-            new WaitCommand(0.5),
+            new WaitCommand(1),
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
-            new WaitCommand(0.25),
+            new WaitCommand(1),
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
             new SetSuperstructure(Superstructures.HOME_POSITION)));
     autoChooser.addOption(
         "HighCubeMobility",
         new SequentialCommandGroup(
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
-            new WaitCommand(0.25),
+            new WaitCommand(0.5),
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
             new SetSuperstructure(Superstructures.CUBE_HIGH),
-            new WaitCommand(0.5),
+            new WaitCommand(1),
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
-            new WaitCommand(0.25),
+            new WaitCommand(1),
             IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
             new SetSuperstructure(Superstructures.HOME_POSITION),
             Commands.parallel(new InstantCommand(() -> motionMode = MotionMode.NULL)),
@@ -288,6 +288,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     autoCommand = autoChooser.get();
     leds.setMode(LEDController.LEDMode.DEOCRATIVE);
+    swerveDrive.zeroGyro();
 
     if (autoCommand != null) {
       autoCommand.schedule();

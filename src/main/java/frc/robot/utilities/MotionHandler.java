@@ -64,7 +64,7 @@ public class MotionHandler {
                 xSpeed * DriveConstants.MAX_SWERVE_VEL,
                 ySpeed * DriveConstants.MAX_SWERVE_VEL,
                 rSpeed * DriveConstants.MAX_ROTATIONAL_SPEED_RAD_PER_SEC,
-                Rotation2d.fromDegrees(Robot.swerveDrive.inputs.gyroYawPosition)));
+                Rotation2d.fromDegrees(-Robot.swerveDrive.inputs.gyroYawPosition)));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAX_SWERVE_VEL);
 
