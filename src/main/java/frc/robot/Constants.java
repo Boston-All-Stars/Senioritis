@@ -127,6 +127,7 @@ public final class Constants {
     public static final double MAX_SWERVE_AZI = Math.PI;
     public static final double MAX_SWERVE_ACCEL = Units.feetToMeters(3);
     public static final double MAX_ROTATIONAL_SPEED_RAD_PER_SEC = 1;
+    public static final double SLOW_MODE_REDUCTION = 0.3;
 
     public static final int DRIVE_CURRENT_LIMIT = 50;
     public static final int AZI_CURRENT_LIMIT = 20;

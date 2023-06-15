@@ -82,6 +82,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
   public void zeroGyro() {
     io.zeroGyro();
+    System.out.println("zeroed");
   }
 
   /**
@@ -237,6 +238,8 @@ public class ChassisSubsystem extends SubsystemBase {
       case TRAJECTORY:
         setModuleStates(MotionHandler.driveTrajectory());
         break;
+      case SLOW_MODE:
+        setModuleStates(MotionHandler.driveSlow());
       default:
         break;
     }

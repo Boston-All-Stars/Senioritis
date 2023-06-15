@@ -17,6 +17,7 @@ public class MotionHandler {
     HEADING_CONTROLLER,
     TRAJECTORY,
     LOCKDOWN,
+    SLOW_MODE,
     NULL
   }
 
@@ -98,6 +99,29 @@ public class MotionHandler {
           new SwerveModuleState(Constants.zero, Rotation2d.fromDegrees(-45)),
           new SwerveModuleState(Constants.zero, Rotation2d.fromDegrees(45))
         };
+
+    return swerveModuleStates;
+  }
+
+  public static SwerveModuleState[] driveSlow() {
+    double xSpeed =
+        MathUtil.applyDeadband(Robot.driver.getLeftY(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
+    double ySpeed =
+        MathUtil.applyDeadband(Robot.driver.getLeftX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
+    double rSpeed =
+        MathUtil.applyDeadband(Robot.driver.getRightX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
+    double slowVel =
+        DriveConstants.SLOW_MODE_REDUCTION * DriveConstants.MAX_SWERVE_VEL;
+
+    SwerveModuleState[] swerveModuleStates =
+        DriveConstants.KINEMATICS.toSwerveModuleStates(
+            ChassisSpeeds.fromFieldRelativeSpeeds(
+                xSpeed * slowVel,
+                ySpeed * slowVel,
+                rSpeed * DriveConstants.MAX_ROTATIONAL_SPEED_RAD_PER_SEC,
+                Rotation2d.fromDegrees(-Robot.swerveDrive.inputs.gyroYawPosition)));
+
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, slowVel);
 
     return swerveModuleStates;
   }

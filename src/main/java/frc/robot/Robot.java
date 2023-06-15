@@ -173,6 +173,7 @@ public class Robot extends LoggedRobot {
   private void createSwerveCommands() {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
     driver.back().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
+    driver.y().onTrue(new InstantCommand(() -> motionMode = MotionMode.SLOW_MODE));
 
     driver
         .povUp()
