@@ -175,6 +175,9 @@ public class Robot extends LoggedRobot {
     driver.back().onTrue(new InstantCommand(() -> motionMode = MotionMode.FULL_DRIVE));
     driver.start().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
     driver.y().onTrue(new InstantCommand(() -> motionMode = MotionMode.SLOW_MODE));
+    driver.leftTrigger(0.8).and(driver.rightTrigger(0.8)).onTrue(pivot.orchPlay())
+    .onFalse(pivot.orchStop());
+
 
     driver
         .povUp()

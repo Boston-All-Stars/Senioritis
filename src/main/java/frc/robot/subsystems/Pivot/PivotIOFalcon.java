@@ -2,6 +2,7 @@ package frc.robot.subsystems.Pivot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.music.Orchestra;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.RobotMap;
@@ -9,6 +10,7 @@ import frc.robot.Constants.RobotMap;
 public class PivotIOFalcon implements PivotIO {
   private final WPI_TalonFX pivotMotorRight;
   private final WPI_TalonFX pivotMotorLeft;
+  public static Orchestra orchestra = new Orchestra();
 
   private final DutyCycleEncoder absoluteEncoder;
 
@@ -29,6 +31,10 @@ public class PivotIOFalcon implements PivotIO {
 
     absoluteEncoder = new DutyCycleEncoder(RobotMap.PIVOT_ENCODER);
     absoluteEncoder.setPositionOffset(PivotConstants.ENCODER_OFFSET);
+
+    orchestra.addInstrument(pivotMotorLeft);
+    orchestra.addInstrument(pivotMotorRight);
+    orchestra.loadMusic("output.chrp");
   }
 
   @Override
