@@ -106,5 +106,17 @@ public class PivotSubsystem extends SubsystemBase {
     public static Command setPositionAndWait(SuperstructureConfig config) {
       return setPositionAndWait(config.getPivotPosition());
     }
+
+  }
+  public Command orchPlay() {
+    return new InstantCommand(() -> PivotIOFalcon.orchestra.play());
+  }
+  
+  public Command orchPause() {
+    return new InstantCommand(() -> PivotIOFalcon.orchestra.pause());
+  }
+  
+  public Command orchStop() {
+    return new InstantCommand(() -> PivotIOFalcon.orchestra.stop());
   }
 }

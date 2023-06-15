@@ -98,8 +98,8 @@ public class Robot extends LoggedRobot {
                         swerveDrive.setModuleStates(
                             DriveConstants.KINEMATICS.toSwerveModuleStates(
                                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                                    1, 0, 0, swerveDrive.getYaw()))))
-                .deadlineWith(new WaitCommand(4))));
+                                    -2, 0, 0, swerveDrive.getYaw()))))
+                .deadlineWith(new WaitCommand(3))));
 
     if (DriverStation.getAlliance() == Alliance.Red) {
       autoChooser.addOption(
@@ -172,7 +172,12 @@ public class Robot extends LoggedRobot {
 
   private void createSwerveCommands() {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
-    driver.back().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
+    driver.back().onTrue(new InstantCommand(() -> motionMode = MotionMode.FULL_DRIVE));
+    driver.start().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
+    driver.y().onTrue(new InstantCommand(() -> motionMode = MotionMode.SLOW_MODE));
+    driver.leftTrigger(0.8).and(driver.rightTrigger(0.8)).onTrue(pivot.orchPlay())
+    .onFalse(pivot.orchStop());
+
 
     driver
         .povUp()
@@ -267,10 +272,6 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
-    if (driver.getRightX() > 0.5) {
-      motionMode = MotionMode.FULL_DRIVE;
-    }
   }
 
   @Override
